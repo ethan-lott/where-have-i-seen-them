@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>Where Have I Seen Them?</title>
+        <link rel="stylesheet" href="index_style.css" type="text/css">
+    </head>
+    <body>
+        <h1>"Where Have I Seen Them?"</h1>
+        <h3>For when you're watching something and can't figure out why you recognize an actor.</h3>
+        <form action="/" method="post">
+            <%- searchBar %>
+            <input type="submit" id="search" name="action" value="Search">    
+            <div id="options">
+                <%- lastPage %>
+                <%- options %>
+                <%- nextPage %>
+            </div>
+        </form>
+    </body>
+</html>

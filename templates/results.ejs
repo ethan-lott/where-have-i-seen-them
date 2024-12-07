@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>Where Have I Seen Them?</title>
+        <link rel="stylesheet" href="results_style.css" type="text/css">
+    </head>
+    <body>
+        <h1><%- title %></h1>
+        <h3 id="back-link"><a href="/">Back to Search</a></h3>
+        <div id="results">
+            <%- text %>
+        </div>
+        <button id="lastFive" onclick="fiveMore(false)" disabled>LAST PAGE</button>
+        <button id="nextFive" onclick="fiveMore(true)">NEXT PAGE</button>
+        <script>
+            window.onload = getPage;
+            let url, page;
+
+            function getPage() {
+                url = new URL(window.location.href);
+                page = parseInt(url.searchParams.get("page"));
+                if (page > 0) {
+                    document.getElementById("lastFive").disabled = false;
+                }
+                if (document.getElementById("results").childElementCount < 5) {
+                    document.getElementById("nextFive").disabled = true;
+                }
+            }
+
+            function fiveMore(next) {
+                url.searchParams.set("page", page + (next ? 1 : -1));
+                window.location.replace(url);
+            }
+        </script>
+    </body>
+</html>
