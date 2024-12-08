@@ -52,7 +52,7 @@ app.post("/", async (req, res) => {
             const item = itemRes.results[i];
             const title = (item.media_type === "movie") ? item.title : item.name;
             const posterPath = item.poster_path;
-            list_html += `<a href="/results?fs=1&media=${item.media_type}&id=${item.id}&page=0"><h4 class="option-title">${title}</h4><img src="https://image.tmdb.org/t/p/w154${posterPath}"></a>\n`;
+            list_html += `<a href="/results?user=0&fs=1&media=${item.media_type}&id=${item.id}&page=0"><h4 class="option-title">${title}</h4><img src="https://image.tmdb.org/t/p/w154${posterPath}"></a>\n`;
             i++;
         } else {
             j = j_max;
@@ -71,8 +71,8 @@ app.post("/", async (req, res) => {
 })
 
 app.get("/results", async (req, res) => {
-    if (req.query.fs == "1") {
-        await updateDB(req.query.media, parseInt(req.query.id));
+    if (req.query.fs === "1" && req.query.user !== "0") {
+        await updateDB(req.query.user, req.query.media, parseInt(req.query.id));
     }
     const id = req.query.id;
     let vars = {
@@ -114,7 +114,7 @@ app.get("/results", async (req, res) => {
                 if (title) {
                     let ind = JSON.stringify(currentUserQueries).indexOf(JSON.stringify([work.media_type, work.id]));
                     let ex = (ind != -1) ? " class=\"searched\"" : "";
-                    vars.text += `\t\t<a${ex} href="/results?fs=0&media=${work.media_type}&id=${work.id}&page=0">${title} (${year ? year : "n.d."})</a>\n`;
+                    vars.text += `\t\t<a${ex} href="/results?user=0&fs=0&media=${work.media_type}&id=${work.id}&page=0">${title} (${year ? year : "n.d."})</a>\n`;
                 }
             };
             vars.text += "\t</div>\n</div>\n";
@@ -127,10 +127,9 @@ app.get("/results", async (req, res) => {
     res.render("results", vars);
 });
 
-async function updateDB(media, id) {
-    const ipRes = await fetch("https://api.ipify.org?format=json");
-    const data = await ipRes.json();
-    const filter = {ip: data.ip};
+async function updateDB(userId, media, id) {
+
+    const filter = {userId: userId};
     await client.connect();
     const result = await client.db(db).collection(collection).findOne(filter);
     if (result) {
@@ -150,7 +149,7 @@ async function updateDB(media, id) {
         }
     } else {
         const user = {
-            ip: data.ip,
+            userId: userId,
             queries: [[media, id]]
         }
         currentUserQueries = user.queries;

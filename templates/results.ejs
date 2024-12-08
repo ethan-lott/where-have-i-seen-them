@@ -18,8 +18,19 @@
             let url, page;
 
             function getPage() {
+                if (!localStorage.getItem('userId')) {
+                    localStorage.setItem('userId', crypto.randomUUID());
+                }
+                const userId = localStorage.getItem('userId');
+
                 url = new URL(window.location.href);
+                console.log(url);
+                if (url.searchParams.get("user") === "0") {
+                    url.searchParams.set("user", localStorage.userId);
+                    window.location.replace(url);
+                }
                 page = parseInt(url.searchParams.get("page"));
+
                 if (page > 0) {
                     document.getElementById("lastFive").disabled = false;
                 }
