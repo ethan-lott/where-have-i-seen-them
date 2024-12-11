@@ -1,6 +1,7 @@
 html {
     font-family: sans-serif;
     text-align: center;
+    background-color: #e1eeff;
 }
 
 #results {
@@ -32,7 +33,7 @@ html {
 .list a {
     text-decoration: none;
     padding: 0.5rem;
-    height: 2.5rem;
+    min-height: 2.5rem;
     color: black;
 }
 
@@ -69,6 +70,7 @@ html {
     right: 1rem;
     top: 40%;
     opacity: 75%;
+    height: 5rem;
 }
 
 #lastFive {
@@ -79,4 +81,5 @@ html {
     padding: 0.5rem;
     font-size: 1rem;
     opacity: 75%;
+    height: 5rem;
 }

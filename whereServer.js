@@ -15,7 +15,6 @@ const client = new MongoClient(uri, {serverApi: ServerApiVersion.v1});
 const app = express();
 const portNumber = process.argv[2];
 app.listen(portNumber);
-process.stdout.write(`http://localhost:${portNumber}`);
 
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(express.static(path.join(__dirname, 'public')));
@@ -52,7 +51,7 @@ app.post("/", async (req, res) => {
             const item = itemRes.results[i];
             const title = (item.media_type === "movie") ? item.title : item.name;
             const posterPath = item.poster_path;
-            list_html += `<a href="/results?user=0&fs=1&media=${item.media_type}&id=${item.id}&page=0"><h4 class="option-title">${title}</h4><img src="https://image.tmdb.org/t/p/w154${posterPath}"></a>\n`;
+            list_html += `<a href="/results?user=0&fs=1&media=${item.media_type}&id=${item.id}&page=0"><h4 class="option-title">${title}</h4><img height="250" src="${posterPath ? ("https://image.tmdb.org/t/p/w154"+posterPath) : "missing.jpg"}"></a>\n`;
             i++;
         } else {
             j = j_max;
