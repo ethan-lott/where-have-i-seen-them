@@ -94,7 +94,8 @@ app.get("/results", async (req, res) => {
         let odd = true;
         for (const actor of castShow) {
             const charName = actor.character ? actor.character : "--";
-            vars.text += `<div class="actor-tile, ${odd ? "odd" : "even"}"><h3>${charName}</h3><img src="https://image.tmdb.org/t/p/w185${actor.profile_path}" alt="Profile image"><h4>${actor.name}</h4>\n\t<div class="list">\n`;
+            const actor_img = actor.profile_path ? actor.profile_path : "missing.jpg";
+            vars.text += `<div class="actor-tile, ${odd ? "odd" : "even"}"><h3>${charName}</h3><img src="https://image.tmdb.org/t/p/w185${actor_img}" alt="Profile image"><h4>${actor.name}</h4>\n\t<div class="list">\n`;
             const filmogRes = await moviedb.personCombinedCredits(actor.id);
             const filmog = filmogRes.cast.sort((a, b) => {
                 a_date = (a.media_type === "movie") ? a.release_date : a.first_air_date;
